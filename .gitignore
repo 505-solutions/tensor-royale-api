@@ -1,2 +1,8 @@
 # env
 .env
+
+# volumes
+volumes
+
+# cache
+__pycache__
