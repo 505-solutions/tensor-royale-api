@@ -82,7 +82,10 @@ def problem(user):
         description="Desc: " + random_string(), 
         reward=random.randint(1, 100),
         deadline=random.randint(10000000, 110101110100),
-        timestamp=random.randint(194102302, 1100021000)
+        timestamp=random.randint(194102302, 1100021000),
+        solved=random.choice([True, False]),
+        submissions_count=random.randint(1, 100),
+        has_dataset=random.choice([True, False])
     )
     session.add(p)
     session.commit()
@@ -92,7 +95,7 @@ def problem(user):
 problems = [problem(random.choice(users)) for _ in range(N_PROBLEMS)]
 
 def data(problem):
-    d = Data(file_train="File Train: " + random_string(), description="Desc: " + random_string(), problem_id=problem.id, name=random_string())
+    d = Data(file_train="File Train: " + random_string(), description="Desc: " + random_string(), problem_id=problem.id, name=random_string(), size=random.randint(1, 100))
     session.add(d)
     session.commit()
     session.refresh(d)

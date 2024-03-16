@@ -1,6 +1,6 @@
 
 from database import Base
-from sqlalchemy import BigInteger, Boolean, Column, Integer, String
+from sqlalchemy import BigInteger, Boolean, Column, Float, Integer, String
 
 # export interface DataModel {
 #   id: number;
@@ -17,6 +17,7 @@ class Data(Base):
     description = Column(String, nullable=True)
     problem_id = Column(Integer, nullable=True)
     name = Column(String, nullable=True)
+    size = Column(Float, nullable=True)
 
     def __repr__(self):
         data = self.as_dict()
