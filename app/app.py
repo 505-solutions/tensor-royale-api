@@ -1,70 +1,72 @@
-import os
 
-import dotenv
-import psycopg2
-
-dotenv.load_dotenv()
-
-
-while True:
-    try:
-        conn = psycopg2.connect(
-            host=os.environ['POSTGRES_HOST'],
-            database=os.environ['POSTGRES_DB'],
-            user=os.environ['POSTGRES_USER'],
-            password=os.environ['POSTGRES_PASSWORD']
-        )
-        print("Connected to database")
-        break
-    except Exception as e:
-        print(e)
-        continue
-
-print(conn)
-from flask import Flask, render_template, request
+from database import SessionMaker, database_uri, init_db
+from flask import Flask, jsonify, request
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
-database_uri = 'postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}'.format(
-    dbuser=os.environ['POSTGRES_USER'],
-    dbpass=os.environ['POSTGRES_PASSWORD'],
-    dbhost=os.environ['POSTGRES_HOST'],
-    dbname=os.environ['POSTGRES_DB']
-)
+from models.user import User
 
 app = Flask(__name__)
 app.config.update(
     SQLALCHEMY_DATABASE_URI=database_uri,
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
 )
+print(database_uri)
 
 # initialize the database connection
 db = SQLAlchemy(app)
 
-# initialize database migration management
+# start app migration
 migrate = Migrate(app, db)
+
+# create all needed db objects
+init_db()
+
+# run app
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", debug=True)
 
 @app.route('/')
 def view_registered_guests():
-    from models import Guest
-    guests = Guest.query.all()
-    return render_template('guest_list.html', guests=guests)
+    # create a session to manage the connection to the database 
+    session = SessionMaker() 
+    
+    # query the users table 
+    users = session.query(User).all() 
+    print(users) 
+
+    session.close()
+    return jsonify([u.__repr__() for u in users])
+
+@app.route('/add', methods=['GET'])
+def register_user():
+    wallet = request.args.get('wallet')
+    title = request.args.get('title')
+    
+    session = SessionMaker()
+
+    user = User(wallet=wallet, title=title)
+    session.add(user)
+    session.commit()
+
+    session.close()
+    return jsonify("User added")
 
 
-@app.route('/register', methods=['GET'])
-def view_registration_form():
-    return render_template('guest_registration.html')
+
+# @app.route('/register', methods=['GET'])
+# def view_registration_form():
+#     return render_template('guest_registration.html')
 
 
-@app.route('/register', methods=['POST'])
-def register_guest():
-    from models import Guest
-    name = request.form.get('name')
-    email = request.form.get('email')
+# @app.route('/register', methods=['POST'])
+# def register_guest():
+#     from models import Guest
+#     name = request.form.get('name')
+#     email = request.form.get('email')
 
-    guest = Guest(name, email)
-    db.session.add(guest)
-    db.session.commit()
+#     guest = Guest(name, email)
+#     db.session.add(guest)
+#     db.session.commit()
 
-    return render_template(
-        'guest_confirmation.html', name=name, email=email)
+#     return render_template(
+#         'guest_confirmation.html', name=name, email=email)
