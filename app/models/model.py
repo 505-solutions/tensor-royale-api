@@ -20,7 +20,11 @@ class Model(Base):
     model = Column(String, nullable=True)
 
     def __repr__(self):
-        return "<Model(id='%s', problem_id='%s', data_id='%s', model='%s')>" % (self.id, self.problem_id, self.data_id, self.model)
+        data = self.as_dict()
+        r = ""
+        for k, v in data.items():
+            r += f"{k}='{v}', "
+        return f"<Model({r[:-2]})>"
     
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
