@@ -59,7 +59,11 @@ def users():
 @app.route('/problems', methods=['POST'])
 def problems():
     session = SessionMaker()
-    problems = session.query(Problem).all()
+    user_address = request.get_json().get('user_address', None)
+    if user_address:
+        problems = session.query(Problem).filter_by(user_address=user_address).all()
+    else:
+        problems = session.query(Problem).all()
     session.close()
 
     return jsonify([problem.as_dict() for problem in problems])
@@ -116,11 +120,13 @@ def delete_problem():
 @app.route('/data', methods=['POST'])
 def data():
     problem_id = request.get_json().get('problem_id', None)
+    author = request.get_json().get('author', None)
+    filter = {
+        'problem_id': problem_id,
+        'author': author
+    }
     session = SessionMaker()
-    if problem_id:
-        data = session.query(Data).filter_by(problem_id=problem_id).all()
-    else:
-        data = session.query(Data).all()
+    data = session.query(Data).filter_by(**{k: v for k, v in filter.items() if v is not None}).all()
     session.close()
 
     outputs = []
@@ -193,7 +199,11 @@ def delete_data():
 @app.route('/models', methods=['POST'])
 def models():
     session = SessionMaker()
-    models = session.query(Model).all()
+    author = request.get_json().get('author', None)
+    if author:
+        models = session.query(Model).filter_by(author=author).all()
+    else:
+        models = session.query(Model).all()
     session.close()
 
     return jsonify([model.as_dict() for model in models])
