@@ -151,6 +151,7 @@ def create_data():
     if problem:
         problem.has_dataset = True
     session.commit()
+    session.refresh(datum)
     session.close()
 
     return jsonify(datum.as_dict())
