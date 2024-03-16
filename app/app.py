@@ -145,7 +145,7 @@ def create_data():
     data = request.get_json()
     datum = Data(**data)
     session.add(datum)
-    session.refresh(datum)
+    # session.refresh(datum)
 
     problem = session.query(Problem).filter_by(id=datum.problem_id).first()
     if problem:
