@@ -151,9 +151,9 @@ def create_data():
 
     response = requests.post(VALIDATOR_URL + "dataset", json=data, headers={"Content-Type": "application/json"})
     print("Response")
-    print(response.text)
+    print(response.text, flush=True)
     print("Response headers")
-    print(response.headers)
+    print(response.headers, flush=True)
     
 
     problem = session.query(Problem).filter_by(id=datum.problem_id).first()
