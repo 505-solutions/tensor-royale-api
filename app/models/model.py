@@ -1,6 +1,6 @@
 
 from database import Base
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import Boolean, Column, Float, Integer, String
 
 # export interface ModelTraining {
 #   id: number;
@@ -17,6 +17,7 @@ class Model(Base):
     description = Column(String, nullable=True)
     name = Column(String, nullable=True)
     author = Column(String, nullable=True)
+    size = Column(Float, nullable=True)
     data_id = Column(Integer, nullable=True)
     model = Column(String, nullable=True)
 

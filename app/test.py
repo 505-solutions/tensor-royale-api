@@ -101,7 +101,7 @@ def data(problem):
 datas = [data(random.choice(problems)) for _ in range(N_DATAS)]
 
 def model(problem, data):
-    m = Model(data_id=data.id, model=random_string(), description=random_string(), name=random_string())
+    m = Model(data_id=data.id, model=random_string(), description=random_string(), name=random_string(), author=random_string(), size=random.randint(1, 100))
     session.add(m)
     session.commit()
     session.refresh(m)
