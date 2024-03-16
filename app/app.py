@@ -151,7 +151,7 @@ def create_data():
 
     response = requests.post(VALIDATOR_URL + "dataset", json=data, headers={"Content-Type": "application/json"})
     print("Response")
-    print(response.json())
+    print(response.text)
     print("Response headers")
     print(response.headers)
     
