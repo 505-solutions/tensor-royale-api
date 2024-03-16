@@ -16,6 +16,7 @@ class Data(Base):
     file_train = Column(String, nullable=True)
     description = Column(String, nullable=True)
     problem_id = Column(Integer, nullable=True)
+    author = Column(String, nullable=True)
     name = Column(String, nullable=True)
     size = Column(Float, nullable=True)
 

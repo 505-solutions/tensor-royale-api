@@ -95,7 +95,8 @@ def problem(user):
 problems = [problem(random.choice(users)) for _ in range(N_PROBLEMS)]
 
 def data(problem):
-    d = Data(file_train="File Train: " + random_string(), description="Desc: " + random_string(), problem_id=problem.id, name=random_string(), size=random.randint(1, 100))
+    d = Data(file_train="File Train: " + random_string(), description="Desc: " + random_string(), 
+             problem_id=problem.id, name=random_string(), size=random.randint(1, 100), author="Author: " + random_string())
     session.add(d)
     session.commit()
     session.refresh(d)
