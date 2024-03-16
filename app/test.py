@@ -73,7 +73,7 @@ def user():
     session.refresh(u)
     return u
 
-users = [user() for _ in range(random.randint(1, N_USERS))]
+users = [user() for _ in range(N_USERS)]
 
 def problem(user):
     p = Problem(
@@ -89,7 +89,7 @@ def problem(user):
     session.refresh(p)
     return p
 
-problems = [problem(random.choice(users)) for _ in range(random.randint(1, N_PROBLEMS))]
+problems = [problem(random.choice(users)) for _ in range(N_PROBLEMS)]
 
 def data(problem):
     d = Data(file_train=random_string(), description=random_string(), problem_id=problem.id)
@@ -98,7 +98,7 @@ def data(problem):
     session.refresh(d)
     return d
 
-datas = [data(random.choice(problems)) for _ in range(random.randint(1, N_DATAS))]
+datas = [data(random.choice(problems)) for _ in range(N_DATAS)]
 
 def model(problem, data):
     m = Model(data_id=data.id, model=random_string(), description=random_string(), name=random_string())
@@ -107,7 +107,7 @@ def model(problem, data):
     session.refresh(m)
     return m
 
-models = [model(random.choice(problems), random.choice(datas)) for _ in range(random.randint(1, N_MODELS))]
+models = [model(random.choice(problems), random.choice(datas)) for _ in range(N_MODELS)]
 
 def submission(user, model):
     s = Submission(user_id=user.id, model_id=model.id)
@@ -116,7 +116,7 @@ def submission(user, model):
     session.refresh(s)
     return s
 
-submissions = [submission(random.choice(users), random.choice(models)) for _ in range(random.randint(1, N_SUBMISSIONS))]
+submissions = [submission(random.choice(users), random.choice(models)) for _ in range(N_SUBMISSIONS)]
 
 def result(model, data, submission):
     r = Result(model_id=model.id, data_id=data.id, submission_id=submission.id, result=random_string())
@@ -125,7 +125,7 @@ def result(model, data, submission):
     session.refresh(r)
     return r
 
-results = [result(random.choice(models), random.choice(datas), random.choice(submissions)) for _ in range(random.randint(1, N_RESULTS))]
+results = [result(random.choice(models), random.choice(datas), random.choice(submissions)) for _ in range(N_RESULTS)]
 session.close()
 
 print("Tested")
