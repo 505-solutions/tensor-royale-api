@@ -12,10 +12,10 @@ from sqlalchemy import Boolean, Column, Integer, String
 class Data(Base):
     __tablename__ = 'data'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    file_train = Column(String, nullable=False)
-    description = Column(String, nullable=False)
+    file_train = Column(String, nullable=True)
+    description = Column(String, nullable=True)
     problem_id = Column(Integer, nullable=True)
-    test = Column(Boolean, nullable=False, default=False)
+    test = Column(Boolean, nullable=True, default=False)
 
     def __repr__(self):
         return "<Data(id='%s', file_train='%s', description='%s', problem_id='%s')>" % (self.id, self.file_train, self.description, self.problem_id)

@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String
 class User(Base): 
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    wallet = Column(String, nullable=False)
+    wallet = Column(String, nullable=True)
   
     def __repr__(self): 
         return "<User(id='%s', wallet='%s', )>" % (self.id, self.wallet)

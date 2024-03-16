@@ -15,7 +15,7 @@ class Model(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     problem_id = Column(Integer, nullable=True)
     data_id = Column(Integer, nullable=True)
-    model = Column(String, nullable=False)
+    model = Column(String, nullable=True)
 
     def __repr__(self):
         return "<Model(id='%s', problem_id='%s', data_id='%s', model='%s')>" % (self.id, self.problem_id, self.data_id, self.model)

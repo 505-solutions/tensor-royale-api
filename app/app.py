@@ -1,14 +1,18 @@
 
 from database import SessionMaker, database_uri, init_db
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from models.data import Data
 from models.model import Model
 from models.problem import Problem
+from models.result import Result
 from models.user import User
 
 app = Flask(__name__)
+# setup cors that allows * to be origin
+CORS(app)
 app.config.update(
     SQLALCHEMY_DATABASE_URI=database_uri,
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
@@ -207,3 +211,59 @@ def delete_model():
     session.close()
 
     return jsonify(model.as_dict())
+
+# Result routes
+@app.route('/results', methods=['POST'])
+def results():
+    session = SessionMaker()
+    results = session.query(Result).all()
+    session.close()
+
+    return jsonify([result.as_dict() for result in results])
+
+@app.route('/results/get', methods=['POST'])
+def get_result():
+    session = SessionMaker()
+    result_id = request.get_json()['id']
+    result = session.query(Result).filter_by(id=result_id).first()
+    session.close()
+
+    return jsonify(result.as_dict())
+
+
+@app.route('/results/create', methods=['POST'])
+def create_result():
+    session = SessionMaker()
+    data = request.get_json()
+    result = Result(**data)
+    session.add(result)
+    session.commit()
+
+    session.refresh(result)
+
+    session.close()
+
+    return jsonify(result.as_dict())
+
+@app.route('/results/update', methods=['POST'])
+def update_result():
+    session = SessionMaker()
+    data = request.get_json()
+    result = session.query(Result).filter_by(id=data['id']).first()
+    for key in data:
+        setattr(result, key, data[key])
+    session.commit()
+    session.close()
+
+    return jsonify(result.as_dict())
+
+@app.route('/results/delete', methods=['POST'])
+def delete_result():
+    session = SessionMaker()
+    result_id = request.get_json()['id']
+    result = session.query(Result).filter_by(id=result_id).first()
+    session.delete(result)
+    session.commit()
+    session.close()
+
+    return jsonify(result.as_dict())
