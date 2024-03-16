@@ -9,5 +9,5 @@ def debug_json(json):
             i += 1
             i *= ord(char)
         i %= 10**9
-        d[key] = i
+        d[key] = str(i)
     return d
