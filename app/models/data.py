@@ -16,9 +16,14 @@ class Data(Base):
     file_train = Column(String, nullable=True)
     description = Column(String, nullable=True)
     problem_id = Column(Integer, nullable=True)
+    title = Column(String, nullable=True)
 
     def __repr__(self):
-        return "<Data(id='%s', file_train='%s', description='%s', problem_id='%s')>" % (self.id, self.file_train, self.description, self.problem_id)
+        data = self.as_dict()
+        r = ""
+        for k, v in data.items():
+            r += f"{k}='{v}', "
+        return f"<Data({r[:-2]})>"
     
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

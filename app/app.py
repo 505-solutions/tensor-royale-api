@@ -109,8 +109,12 @@ def delete_problem():
 # Data routes
 @app.route('/data', methods=['POST'])
 def data():
+    problem_id = request.get_json().get('problem_id', None)
     session = SessionMaker()
-    data = session.query(Data).all()
+    if problem_id:
+        data = session.query(Data).filter_by(problem_id=problem_id).all()
+    else:
+        data = session.query(Data).all()
     session.close()
 
     outputs = []

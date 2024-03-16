@@ -13,7 +13,9 @@ from sqlalchemy import Boolean, Column, Integer, String
 class Model(Base):
     __tablename__ = 'model'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    problem_id = Column(Integer, nullable=True)
+    # problem_id = Column(Integer, nullable=True)
+    description = Column(String, nullable=True)
+    name = Column(String, nullable=True)
     data_id = Column(Integer, nullable=True)
     model = Column(String, nullable=True)
 

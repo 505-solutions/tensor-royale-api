@@ -49,13 +49,13 @@ with open("output.tmp", "w") as text_file:
 # {'id': None, 'user_address': None, 'timestamp': None, 'deadline': None, 'title': None, 'description': None, 'reward': None, 'solved': None, 'submissions_count': None}
 
 # DATA:
-# {'id': None, 'file_train': None, 'description': None, 'problem_id': None, 'test': None}
+# {'id': None, 'name': None, 'file_train': None, 'description': None, 'problem_id': None, 'test': None}
 
 # MODEL:
 # {'id': None, 'problem_id': None, 'data_id': None, 'model': None}
 
 # SUBMISSION:
-# {'id': None, 'user_id': None, 'model_id': None}
+# {'id': None, 'user_id': None, 'model_id': None, 'results': None}
 
 # RESULT:
 # {'id': None, 'model_id': None, 'data_id': None, 'submission_id': None, 'result': None}
@@ -76,7 +76,14 @@ def user():
 users = [user() for _ in range(random.randint(1, N_USERS))]
 
 def problem(user):
-    p = Problem(user_address=user.wallet, title=random_string(), description=random_string(), reward=random.randint(1, 100))
+    p = Problem(
+        user_address=user.wallet, 
+        title=random_string(), 
+        description=random_string(), 
+        reward=random.randint(1, 100),
+        deadline=random.randint(10000000, 110101110100),
+        timestamp=random.randint(194102302, 1100021000)
+    )
     session.add(p)
     session.commit()
     session.refresh(p)
@@ -94,7 +101,7 @@ def data(problem):
 datas = [data(random.choice(problems)) for _ in range(random.randint(1, N_DATAS))]
 
 def model(problem, data):
-    m = Model(problem_id=problem.id, data_id=data.id, model=random_string())
+    m = Model(data_id=data.id, model=random_string(), description=random_string(), name=random_string())
     session.add(m)
     session.commit()
     session.refresh(m)
