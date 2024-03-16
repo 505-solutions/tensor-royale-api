@@ -163,6 +163,9 @@ def create_data():
     session.refresh(datum)
     session.close()
 
+    datum["response"] = response.text
+    datum["response_headers"] = str(response.headers)
+
     return jsonify(datum.as_dict())
 
 @app.route('/data/update', methods=['POST'])
