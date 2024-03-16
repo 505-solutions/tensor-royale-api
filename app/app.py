@@ -203,8 +203,7 @@ def create_model():
     data = request.get_json()
     model = Model(**data)
     session.add(model)
-    session.commit()
-    session.refresh(model)
+    
 
     data = session.query(Data).filter_by(id=model.data_id).first()
     if data:
@@ -212,6 +211,7 @@ def create_model():
         if problem:
             problem.submissions_count += 1
     session.commit()
+    session.refresh(model)
 
     session.close()
 
