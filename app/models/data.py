@@ -16,7 +16,7 @@ class Data(Base):
     file_train = Column(String, nullable=True)
     description = Column(String, nullable=True)
     problem_id = Column(Integer, nullable=True)
-    title = Column(String, nullable=True)
+    name = Column(String, nullable=True)
 
     def __repr__(self):
         data = self.as_dict()
