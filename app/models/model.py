@@ -16,6 +16,7 @@ class Model(Base):
     # problem_id = Column(Integer, nullable=True)
     description = Column(String, nullable=True)
     name = Column(String, nullable=True)
+    author = Column(String, nullable=True)
     data_id = Column(Integer, nullable=True)
     model = Column(String, nullable=True)
 
