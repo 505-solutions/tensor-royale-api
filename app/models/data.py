@@ -1,6 +1,6 @@
 
 from database import Base
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import BigInteger, Boolean, Column, Integer, String
 
 # export interface DataModel {
 #   id: number;

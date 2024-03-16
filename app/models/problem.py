@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import BigInteger, Boolean, Column, Integer, String
 
 # export interface ProblemModel {
 #   id: number;
@@ -17,8 +17,8 @@ class Problem(Base):
     __tablename__ = 'problem'
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_address = Column(String, nullable=True)
-    timestamp = Column(Integer, nullable=True)
-    deadline = Column(Integer, nullable=True)
+    timestamp = Column(BigInteger, nullable=True)
+    deadline = Column(BigInteger, nullable=True)
     title = Column(String, nullable=True)
     description = Column(String, nullable=True)
     reward = Column(Integer, nullable=True)
