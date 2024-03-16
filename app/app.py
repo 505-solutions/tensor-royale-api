@@ -122,7 +122,11 @@ def data():
         outputs.append(datum.as_dict())
 
     for output in outputs:
-        output['problem'] = session.query(Problem).filter_by(id=output['problem_id']).first().as_dict()
+        results = session.query(Problem).filter_by(id=output['problem_id'])
+        if results.count() > 0:
+            output['problem'] = results.first().as_dict()
+        else:
+            output['problem'] = None
 
     return jsonify(outputs)
 
