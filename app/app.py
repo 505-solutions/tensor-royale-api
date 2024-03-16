@@ -37,7 +37,7 @@ if __name__ == '__main__':
 # run tests to make sure db works
 import test
 
-VALIDATOR_URL = "https://tensorroyale-api.alpi314.com/"
+VALIDATOR_URL = "https://tensorroyale-prover.alpi314.com/"
 
 # Routes
 @app.route('/')
