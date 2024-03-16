@@ -145,13 +145,12 @@ def create_data():
     data = request.get_json()
     datum = Data(**data)
     session.add(datum)
-    session.commit()
     session.refresh(datum)
 
     problem = session.query(Problem).filter_by(id=datum.problem_id).first()
-    problem.has_dataset = True
+    if problem:
+        problem.has_dataset = True
     session.commit()
-
     session.close()
 
     return jsonify(datum.as_dict())
@@ -203,7 +202,6 @@ def create_model():
     data = request.get_json()
     model = Model(**data)
     session.add(model)
-    session.commit()
     session.refresh(model)
 
     data = session.query(Data).filter_by(id=model.data_id).first()
@@ -211,6 +209,7 @@ def create_model():
         problem = session.query(Problem).filter_by(id=data.problem_id).first()
         if problem:
             problem.submissions_count += 1
+    session.commit()
 
     session.close()
 
@@ -234,13 +233,13 @@ def delete_model():
     model_id = request.get_json()['id']
     model = session.query(Model).filter_by(id=model_id).first()
     session.delete(model)
-    session.commit()
 
     data = session.query(Data).filter_by(id=model.data_id).first()
     if data:
         problem = session.query(Problem).filter_by(id=data.problem_id).first()
         if problem:
             problem.submissions_count += 1
+    session.commit()
 
     session.close()
 
