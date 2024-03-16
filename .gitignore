@@ -9,3 +9,4 @@ __pycache__
 
 # database migrations
 app/migrations
+app/a_migrations
