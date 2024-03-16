@@ -1,4 +1,5 @@
 
+import requests
 from database import SessionMaker, database_uri, init_db
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -36,6 +37,7 @@ if __name__ == '__main__':
 # run tests to make sure db works
 import test
 
+VALIDATOR_URL = "https://tensorroyale-api.alpi314.com/"
 
 # Routes
 @app.route('/')
@@ -146,6 +148,13 @@ def create_data():
     datum = Data(**data)
     session.add(datum)
     # session.refresh(datum)
+
+    response = requests.post(VALIDATOR_URL + "dataset", json=data, headers={"Content-Type": "application/json"})
+    print("Response")
+    print(response.json())
+    print("Response headers")
+    print(response.headers)
+    
 
     problem = session.query(Problem).filter_by(id=datum.problem_id).first()
     if problem:
