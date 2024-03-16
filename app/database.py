@@ -18,6 +18,19 @@ while True:
             password=os.environ['POSTGRES_PASSWORD'],
         )
         print("Connected to database")
+
+        all_tables = "select table_name from information_schema.tables WHERE table_schema = 'public' AND table_name NOT LIKE '%alembic%'"
+        cursor = conn.cursor()
+        cursor.execute(all_tables)
+        tables = cursor.fetchall()
+        # drop all tables
+        print(tables)
+        for table in tables:
+            cursor.execute(f"DROP TABLE \"{table[0]}\" CASCADE")
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print("Setup Tables")
         break
     except Exception as e:
         print(os.environ['POSTGRES_HOST'])
