@@ -13,3 +13,6 @@ class Result(Base):
 
     def __repr__(self):
         return "<Result(id='%s', model_id='%s', data_id='%s', result='%s')>" % (self.id, self.model_id, self.data_id, self.result)
+    
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

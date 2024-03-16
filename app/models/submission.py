@@ -11,3 +11,6 @@ class Submission(Base):
 
     def __repr__(self):
         return "<Submission(id='%s', user_id='%s', model_id='%s')>" % (self.id, self.user_id, self.model_id)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
