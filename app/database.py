@@ -14,7 +14,8 @@ while True:
             host=os.environ['POSTGRES_HOST'],
             database=os.environ['POSTGRES_DB'],
             user=os.environ['POSTGRES_USER'],
-            password=os.environ['POSTGRES_PASSWORD']
+            port=os.environ['POSTGRES_PORT'],
+            password=os.environ['POSTGRES_PASSWORD'],
         )
         print("Connected to database")
         break
