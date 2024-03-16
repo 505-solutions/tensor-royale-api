@@ -37,6 +37,8 @@ if __name__ == '__main__':
 # run tests to make sure db works
 import test
 
+from helper import debug_json
+
 VALIDATOR_URL = "https://tensorroyale-prover.alpi314.com/"
 
 # Routes
@@ -157,7 +159,9 @@ def create_data():
     session.refresh(datum)
     session.close()
 
-    response = requests.post(VALIDATOR_URL + "dataset", json=datum.as_dict(), headers={"Content-Type": "application/json"})
+    print("Request")
+    print(debug_json(datum.as_dict()), flush=True)
+    response = requests.post(VALIDATOR_URL + "dataset", json=debug_json(datum.as_dict()), headers={"Content-Type": "application/json"})
     print("Response")
     print(response.text, flush=True)
     print("Response headers")
