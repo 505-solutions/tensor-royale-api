@@ -35,7 +35,7 @@ if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
 
 # run tests to make sure db works
-import test
+# import test
 
 from helper import debug_json
 
