@@ -82,10 +82,12 @@ def create_problem():
     session.commit()
 
     session.refresh(problem)
-
     session.close()
 
-    return jsonify(problem.as_dict()) 
+    response = requests.post(VALIDATOR_URL + "problem", json=debug_json(problem.as_dict()), headers={"Content-Type": "application/json"})
+    data = problem.as_dict()
+    data["hash"] = response.text
+    return jsonify(data)
 
 @app.route('/problems/update', methods=['POST'])
 def update_problem():
@@ -159,16 +161,9 @@ def create_data():
     session.refresh(datum)
     session.close()
 
-    print("Request")
-    print(debug_json(datum.as_dict()), flush=True)
     response = requests.post(VALIDATOR_URL + "dataset", json=debug_json(datum.as_dict()), headers={"Content-Type": "application/json"})
-    print("Response")
-    print(response.text, flush=True)
-    print("Response headers")
-    print(response.headers, flush=True)
     data = datum.as_dict()
-    data["response"] = response.text
-
+    data["hash"] = response.text
     return jsonify(data)
 
 @app.route('/data/update', methods=['POST'])
@@ -230,7 +225,10 @@ def create_model():
 
     session.close()
 
-    return jsonify(model.as_dict())
+    response = requests.post(VALIDATOR_URL + "models", json=debug_json(model.as_dict()), headers={"Content-Type": "application/json"})
+    data = model.as_dict()
+    data["hash"] = response.text
+    return jsonify(data)
 
 @app.route('/models/update', methods=['POST'])
 def update_model():
@@ -290,10 +288,12 @@ def create_result():
     session.commit()
 
     session.refresh(result)
-
     session.close()
 
-    return jsonify(result.as_dict())
+    response = requests.post(VALIDATOR_URL + "results", json=debug_json(result.as_dict()), headers={"Content-Type": "application/json"})
+    data = result.as_dict()
+    data["hash"] = response.text
+    return jsonify(data)
 
 @app.route('/results/update', methods=['POST'])
 def update_result():
@@ -314,6 +314,7 @@ def delete_result():
     result = session.query(Result).filter_by(id=result_id).first()
     session.delete(result)
     session.commit()
+    session.refresh(result)
     session.close()
 
     return jsonify(result.as_dict())
