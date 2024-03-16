@@ -67,7 +67,7 @@ def random_string():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
 
 def user():
-    u = User(wallet=random_string())
+    u = User(wallet="Wallet: " + random_string())
     session.add(u)
     session.commit()
     session.refresh(u)
@@ -78,8 +78,8 @@ users = [user() for _ in range(N_USERS)]
 def problem(user):
     p = Problem(
         user_address=user.wallet, 
-        title=random_string(), 
-        description=random_string(), 
+        title="Title: " + random_string(), 
+        description="Desc: " + random_string(), 
         reward=random.randint(1, 100),
         deadline=random.randint(10000000, 110101110100),
         timestamp=random.randint(194102302, 1100021000)
@@ -92,7 +92,7 @@ def problem(user):
 problems = [problem(random.choice(users)) for _ in range(N_PROBLEMS)]
 
 def data(problem):
-    d = Data(file_train=random_string(), description=random_string(), problem_id=problem.id, name=random_string())
+    d = Data(file_train="File Train: " + random_string(), description="Desc: " + random_string(), problem_id=problem.id, name=random_string())
     session.add(d)
     session.commit()
     session.refresh(d)
@@ -101,7 +101,7 @@ def data(problem):
 datas = [data(random.choice(problems)) for _ in range(N_DATAS)]
 
 def model(problem, data):
-    m = Model(data_id=data.id, model=random_string(), description=random_string(), name=random_string(), author=random_string(), size=random.randint(1, 100))
+    m = Model(data_id=data.id, model="Model: " + random_string(), description="Desc: " + random_string(), name="Name: " + random_string(), author="Author: " + random_string(), size=random.randint(1, 100))
     session.add(m)
     session.commit()
     session.refresh(m)
@@ -119,7 +119,7 @@ def submission(user, model):
 submissions = [submission(random.choice(users), random.choice(models)) for _ in range(N_SUBMISSIONS)]
 
 def result(model, data, submission):
-    r = Result(model_id=model.id, data_id=data.id, submission_id=submission.id, result=random_string())
+    r = Result(model_id=model.id, data_id=data.id, submission_id=submission.id, result="Result: " + random_string())
     session.add(r)
     session.commit()
     session.refresh(r)
