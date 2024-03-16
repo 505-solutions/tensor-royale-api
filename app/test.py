@@ -9,6 +9,13 @@ from models.result import Result
 from models.submission import Submission
 from models.user import User
 
+N_USERS = 3
+N_PROBLEMS = 5
+N_DATAS = 10
+N_MODELS = 10
+N_SUBMISSIONS = 15
+N_RESULTS = 20
+
 # Print definitions
 output = ""
 output += "USER:\n"
@@ -66,7 +73,7 @@ def user():
     session.refresh(u)
     return u
 
-users = [user() for _ in range(random.randint(1, 10))]
+users = [user() for _ in range(random.randint(1, N_USERS))]
 
 def problem(user):
     p = Problem(user_address=user.wallet, title=random_string(), description=random_string(), reward=random.randint(1, 100))
@@ -75,39 +82,43 @@ def problem(user):
     session.refresh(p)
     return p
 
-problems = [problem(random.choice(users)) for _ in range(random.randint(1, 10))]
+problems = [problem(random.choice(users)) for _ in range(random.randint(1, N_PROBLEMS))]
 
+def data(problem):
+    d = Data(file_train=random_string(), description=random_string(), problem_id=problem.id)
+    session.add(d)
+    session.commit()
+    session.refresh(d)
+    return d
 
+datas = [data(random.choice(problems)) for _ in range(random.randint(1, N_DATAS))]
 
-user = User(wallet="0x123")
-session.add(user)
-session.commit()
-session.refresh(user)
+def model(problem, data):
+    m = Model(problem_id=problem.id, data_id=data.id, model=random_string())
+    session.add(m)
+    session.commit()
+    session.refresh(m)
+    return m
 
-problem = Problem(user_address=user.wallet, title="Problem 1", description="Description 1", reward=100)
-session.add(problem)
-session.commit()
-session.refresh(problem)
+models = [model(random.choice(problems), random.choice(datas)) for _ in range(random.randint(1, N_MODELS))]
 
-data = Data(file_train="file.zip", description="Description 1", problem_id=problem.id)
-session.add(data)
-session.commit()
-session.refresh(data)
+def submission(user, model):
+    s = Submission(user_id=user.id, model_id=model.id)
+    session.add(s)
+    session.commit()
+    session.refresh(s)
+    return s
 
-model = Model(problem_id=problem.id, data_id=data.id, model="model.zip")
-session.add(model)
-session.commit()
-session.refresh(model)
+submissions = [submission(random.choice(users), random.choice(models)) for _ in range(random.randint(1, N_SUBMISSIONS))]
 
-submission = Submission(user_id=user.id, model_id=model.id)
-session.add(submission)
-session.commit()
-session.refresh(submission)
+def result(model, data, submission):
+    r = Result(model_id=model.id, data_id=data.id, submission_id=submission.id, result=random_string())
+    session.add(r)
+    session.commit()
+    session.refresh(r)
+    return r
 
-result = Result(model_id=model.id, data_id=data.id, submission_id=submission.id, result="result.zip")
-session.add(result)
-session.commit()
-session.refresh(result)
-
+results = [result(random.choice(models), random.choice(datas), random.choice(submissions)) for _ in range(random.randint(1, N_RESULTS))]
 session.close()
+
 print("Tested")
