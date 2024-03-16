@@ -148,12 +148,6 @@ def create_data():
     datum = Data(**data)
     session.add(datum)
     # session.refresh(datum)
-
-    response = requests.post(VALIDATOR_URL + "dataset", json=data, headers={"Content-Type": "application/json"})
-    print("Response")
-    print(response.text, flush=True)
-    print("Response headers")
-    print(response.headers, flush=True)
     
 
     problem = session.query(Problem).filter_by(id=datum.problem_id).first()
@@ -163,10 +157,15 @@ def create_data():
     session.refresh(datum)
     session.close()
 
-    datum["response"] = response.text
-    datum["response_headers"] = str(response.headers)
+    response = requests.post(VALIDATOR_URL + "dataset", json=datum.as_dict(), headers={"Content-Type": "application/json"})
+    print("Response")
+    print(response.text, flush=True)
+    print("Response headers")
+    print(response.headers, flush=True)
+    data = datum.as_dict()
+    data["response"] = response.text
 
-    return jsonify(datum.as_dict())
+    return jsonify(data)
 
 @app.route('/data/update', methods=['POST'])
 def update_data():
