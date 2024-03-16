@@ -6,3 +6,6 @@ volumes
 
 # cache
 __pycache__
+
+# database migrations
+app/migrations
