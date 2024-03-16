@@ -15,6 +15,7 @@ class Data(Base):
     file_train = Column(String, nullable=False)
     description = Column(String, nullable=False)
     problem_id = Column(Integer, nullable=True)
+    test = Column(Boolean, nullable=False, default=False)
 
     def __repr__(self):
         return "<Data(id='%s', file_train='%s', description='%s', problem_id='%s')>" % (self.id, self.file_train, self.description, self.problem_id)
