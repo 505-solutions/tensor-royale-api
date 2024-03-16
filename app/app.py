@@ -8,6 +8,7 @@ from models.data import Data
 from models.model import Model
 from models.problem import Problem
 from models.result import Result
+from models.submission import Submission
 from models.user import User
 
 app = Flask(__name__)
@@ -31,6 +32,9 @@ init_db()
 # run app
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
+
+# run tests to make sure db works
+import test
 
 
 # Routes
@@ -109,7 +113,14 @@ def data():
     data = session.query(Data).all()
     session.close()
 
-    return jsonify([datum.as_dict() for datum in data])
+    outputs = []
+    for datum in data:
+        outputs.append(datum.as_dict())
+
+    for output in outputs:
+        output['problem'] = session.query(Problem).filter_by(id=output['problem_id']).first().as_dict()
+
+    return jsonify(outputs)
 
 @app.route('/data/get', methods=['POST'])
 def get_data():
