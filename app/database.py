@@ -3,7 +3,7 @@ import os
 import dotenv
 import psycopg2
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, scoped_session, sessionmaker
+from sqlalchemy.orm import declarative_base, session, sessionmaker
 
 dotenv.load_dotenv()
 
@@ -44,8 +44,8 @@ database_uri = 'postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}'.forma
     dbname=os.environ['POSTGRES_DB']
 )
 
-engine = create_engine(database_uri)
-SessionMaker = scoped_session(sessionmaker(autocommit=False,
+engine = create_engine(database_uri, pool_size=10, max_overflow=20)
+SessionMaker = session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
 Base = declarative_base()
