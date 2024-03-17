@@ -6,6 +6,9 @@ WORKDIR /
 
 RUN pip install -r ./requirements.txt --no-cache-dir
 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | bash
+RUN ln -s /root/.local/share/scarb-install/latest/bin/scarb /usr/bin/scarb
+
 COPY /app /app
 
 COPY .env /app/.env

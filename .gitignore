@@ -13,3 +13,6 @@ app/a_migrations
 
 # temp files
 *.tmp
+
+# cairo generation files
+cairo

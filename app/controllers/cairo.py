@@ -1,11 +1,18 @@
 import os
+import random
+import string
 
 import numpy as np
 import tensorflow as tf
 
 
 def encode(model):
-    # model is quantized aware (or should be quantized aware)
+    # create a folder to store the generated files
+    folder_name = random.choice(string.ascii_letters) + ''.join(random.choices(string.ascii_letters + string.digits, k=7))
+    folder = os.path.join(os.environ['CAIRO_PATH'], folder_name)
+    os.makedirs(folder, exist_ok=True)
+
+    # retrive this from file coin
     model_file = 'some_saved_keras_model.h5' # retrive from filecoin
     test_data = './data' # retrive from filecoin
 
